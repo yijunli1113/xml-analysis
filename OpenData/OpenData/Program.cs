@@ -35,16 +35,57 @@ namespace OpenData
                 aa.授權方式 = getValue(node, "授權方式");
 
 
-                //Console.WriteLine(aa.資料集名稱 );
-                //Console.WriteLine(aa.服務分類);
-                //Console.WriteLine(aa.資料集描述);
-                //Console.ReadKey();
+                
                 result.Add(aa);
 
 
             };
+            // ------------------------------
+            Func<XElement, string, string> getValueFunc = (node, properuName) =>
+            {
+                return node.Element(properuName)?.Value?.Trim();
+            };
+            Action<List<OpenData>> showOpenDataAction = (x) =>
+            {
+                //Console.WriteLine(string.Format("共收到{0}筆的資料", nodes.Count));
+                x.GroupBy(node => node.資料集提供機關聯絡人).ToList()
+                    .ForEach(group =>
+                    {
+                        var key = group.Key;
+                        var groupDatas = group.ToList();
+                        var message = $"資料集提供機關聯絡人:{key},共有{groupDatas.Count()}筆資料";
+                        Console.WriteLine(message);
+                    });
+            };
+            nodes.ToList()
+                .ForEach(node =>
+                {
+                    OpenData aa= new OpenData();
+                    aa.資料集名稱 = getValue(node, "資料集名稱");
+                    aa.資料集提供機關聯絡人 = getValue(node, "資料集提供機關聯絡人");
+                    aa.資料集描述 = getValue(node, "資料集描述");
+                    aa.授權方式 = getValue(node, "授權方式");
+                    result.Add(aa);
+                });
 
+            //--------------------------------
+            result = nodes.ToList()
+                    .Select(node =>
+                    {
+                        OpenData aa = new OpenData();
+                        aa.資料集名稱 = getValue(node, "資料集名稱");
+                        aa.資料集提供機關聯絡人 = getValue(node, "資料集提供機關聯絡人");
+                        aa.資料集描述 = getValue(node, "資料集描述");
+                        aa.授權方式 = getValue(node, "授權方式");
+                        return aa;
+                    }).ToList();
 
+            //.Where(x => x.資料集提供機關聯絡人 != null)
+            //.Where(x = x.資料集名稱 >10)
+            //.Tolist();
+
+            result = result.Where(x => x.資料集提供機關聯絡人 != null).ToList();
+   
             return result;
         }
 
