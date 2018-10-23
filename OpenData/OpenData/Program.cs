@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenData.repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -11,7 +12,14 @@ namespace OpenData
         static void Main(string[] args)
         {
             var nodes = findOpenData();
-            ShowOpenData(nodes);
+            Repositorys aa = new Repositorys();
+            var makeconn = aa.Connection();
+            nodes.ForEach(nodes_data =>
+                {
+                    aa.Insert_Data_SQL(makeconn , nodes_data);
+                });
+
+
             Console.ReadKey();
 
         }
