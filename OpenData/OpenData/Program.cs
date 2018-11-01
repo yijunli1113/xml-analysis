@@ -14,12 +14,9 @@ namespace OpenData
             var nodes = findOpenData();
             Repositorys aa = new Repositorys();
             var makeconn = aa.Connection();
-            nodes.ForEach(nodes_data =>
-                {
-                    aa.Insert_Data_SQL(makeconn , nodes_data);
-                });
+            var select = aa.select(makeconn);
 
-
+            ShowOpenData(select);
             Console.ReadKey();
 
         }

@@ -6,10 +6,15 @@ namespace OpenData
 {
     class OpenData
     {
+        public int Id { get; set; }
         public string 資料集名稱 { get; set; }
         public string 授權方式 { get; set; }
         public string 資料集描述 { get; set; }
         public string 資料集提供機關聯絡人 { get; set; }
+
+        internal class Models
+        {
+        }
     }
     
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
@@ -15,6 +16,8 @@ namespace OpenData.repository
             return myConn;
         }
 
+
+
         public void Insert_Data_SQL(SqlConnection conn, OpenData item)
         {
             conn.Open();
@@ -27,6 +30,34 @@ namespace OpenData.repository
 
             conn.Close();
         }
+        
+        
 
+        public List<OpenData> select(SqlConnection conn)
+        {
+            conn.Open();
+            var result = new List<OpenData>();
+
+            var command = new SqlCommand("", conn);
+
+            //command.CommandText = string.Format(@"Select Id,資料集名稱,資料集提供機關聯絡人,資料集描述,授權方式 From STable");
+            command.CommandText = string.Format(@"Select * From STable");
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var item = new OpenData();
+                item.Id = reader.GetInt32(0);
+                item.資料集名稱 = reader.GetString(1);
+                item.資料集提供機關聯絡人= reader.GetString(2);
+                item.資料集描述 = reader.GetString(3);
+                item.授權方式 = reader.GetString(4);
+                result.Add(item);
+            }
+
+            conn.Close();
+
+            return result;
+        }
     }
 }
